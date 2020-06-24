@@ -228,12 +228,13 @@ class SoapClient(object):
                 
         self.xml_request = request.as_xml()
         self.xml_response = self.send(method, self.xml_request)
+        with open('log.txt', 'w') as f:
+            f.write(self.xml_response)
         response = SimpleXMLElement(self.xml_response, namespace=self.namespace, 
                                     jetty=self.__soap_server in ('jetty', ))
         if self.exceptions and response("Fault", ns=list(soap_namespaces.values()), error=False):
             raise SoapFault(str(response.faultcode), str(response.faultstring))
         return response
-    
     
     def send(self, method, xml):
         "Send SOAP request using HTTP"
