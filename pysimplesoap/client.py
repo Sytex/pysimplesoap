@@ -127,9 +127,9 @@ class SoapClient(object):
                 
         self.__ns = ns # namespace prefix or False to not use it
         if not ns:
-            self.__xml = """<?xml version="1.0" encoding="UTF-8"?> 
-<%(soap_ns)s:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+            self.__xml = """<?xml version="1.0" encoding="UTF-8"?>
+<%(soap_ns)s:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:%(soap_ns)s="%(soap_uri)s">
 <%(soap_ns)s:Header/>
 <%(soap_ns)s:Body>
@@ -141,11 +141,8 @@ class SoapClient(object):
             self.__xml = """<?xml version="1.0" encoding="UTF-8"?>
 <%(soap_ns)s:Envelope xmlns:%(soap_ns)s="%(soap_uri)s" xmlns:%(ns)s="%(namespace)s">
 <%(soap_ns)s:Header/>
-<%(soap_ns)s:Body>
-    <%(ns)s:%(method)s>
-    </%(ns)s:%(method)s>
-</%(soap_ns)s:Body>
-</%(soap_ns)s:Envelope>"""
+<%(soap_ns)s:Body><%(ns)s:%(method)s></%(ns)s:%(method)s></%(soap_ns)s:Body></%(soap_ns)s:Envelope>"""
+
 
         # parse wsdl url
         self.services = wsdl and self.wsdl_parse(wsdl, debug=trace, cache=cache) 
@@ -228,9 +225,9 @@ class SoapClient(object):
                 
         self.xml_request = request.as_xml()
         self.xml_response = self.send(method, self.xml_request)
-        with open('log.txt', 'w') as f:
+        with open('/home/docker/code/app/afip/cache/log.txt', 'w') as f:
             f.write(self.xml_response)
-        response = SimpleXMLElement(self.xml_response, namespace=self.namespace, 
+        response = SimpleXMLElement(self.xml_response.decode('utf-8'), namespace=self.namespace, 
                                     jetty=self.__soap_server in ('jetty', ))
         if self.exceptions and response("Fault", ns=list(soap_namespaces.values()), error=False):
             raise SoapFault(str(response.faultcode), str(response.faultstring))
