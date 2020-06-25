@@ -32,7 +32,7 @@ except ImportError:
     from urllib import request as urllib2
     from urllib.parse import urlsplit
 
-from . import __author__, __copyright__, __license__, __version__
+from .client import __author__, __copyright__, __license__, __version__
 
 
 log = logging.getLogger(__name__)

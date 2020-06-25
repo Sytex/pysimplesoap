@@ -225,8 +225,6 @@ class SoapClient(object):
                 
         self.xml_request = request.as_xml()
         self.xml_response = self.send(method, self.xml_request)
-        with open('/home/docker/code/app/afip/cache/log.txt', 'w') as f:
-            f.write(self.xml_response)
         response = SimpleXMLElement(self.xml_response.decode('utf-8'), namespace=self.namespace, 
                                     jetty=self.__soap_server in ('jetty', ))
         if self.exceptions and response("Fault", ns=list(soap_namespaces.values()), error=False):
